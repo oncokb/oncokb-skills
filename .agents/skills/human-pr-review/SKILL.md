@@ -15,6 +15,8 @@ description: Guide an interactive human PR review by summarizing changes and lin
 - Ask for the PR link first.
 - Use `gh` for GitHub PR and issue inspection.
 - Keep interaction conversational and checkpointed: summarize, quiz, confirm understanding, then proceed.
+- If this is not the reviewer's first pass on the PR, check unresolved prior review comments and report what is still open.
+- If this is not the reviewer's first pass on the PR, highlight what changed since that reviewer's last review activity.
 - If the reviewer is confused, propose specific comment text and ask for approval before posting.
 - Never post comments preemptively.
 
@@ -36,7 +38,14 @@ description: Guide an interactive human PR review by summarizing changes and lin
      - notable risks or assumptions
    - Completion criterion: reviewer gets a concise PR + issue context summary that can stand alone.
 
-3. Quiz reviewer understanding.
+3. If this is a follow-up review, inspect prior review state.
+   - Determine whether this is the logged-in reviewer's first review pass on the PR.
+   - If not first pass, inspect prior review comments and threads.
+   - Identify unresolved comments and clearly point them out to the reviewer.
+   - Summarize code changes made since the logged-in reviewer's last review (new commits, updated files, and affected behavior/data flow).
+   - Completion criterion: reviewer sees both unresolved prior feedback and a clear delta since their last review.
+
+4. Quiz reviewer understanding.
    - Ask targeted questions that check understanding of:
      - data flow before vs after this change
      - key control points and failure paths
@@ -45,20 +54,20 @@ description: Guide an interactive human PR review by summarizing changes and lin
    - Evaluate responses for confidence and correctness.
    - Completion criterion: either reviewer demonstrates understanding, or specific confusion areas are identified.
 
-4. Handle confusion with optional PR comments.
+5. Handle confusion with optional PR comments.
    - If confusion is identified, explain the confusing area in plain language first.
    - Ask whether the user wants to post clarification comments on the PR.
    - You may recommend comment text, but always ask before posting.
    - If approved, post comments that begin with `[AI-assisted]` and clearly request the missing explanation.
    - Completion criterion: either understanding is restored, or approved `[AI-assisted]` clarification comments are posted.
 
-5. Run and explore locally.
+6. Run and explore locally.
    - Ask the reviewer to run the code locally.
    - Provide a checklist of concrete interactions to validate behavior and data flow.
    - Tailor checklist items to changed files and issue intent.
    - Completion criterion: reviewer has a local validation checklist aligned to PR risk.
 
-6. Invite follow-up questions and optional comment requests.
+7. Invite follow-up questions and optional comment requests.
    - Tell the user to ask questions about any code path they do not understand.
    - If they remain unsure about part of the code, ask if they want you to add a PR comment.
    - Recommend a comment when useful, but wait for explicit approval before posting.
@@ -78,6 +87,8 @@ description: Guide an interactive human PR review by summarizing changes and lin
   - PR URL reviewed
   - key change summary
   - linked issues summary and relevance
+  - unresolved prior review comments (for non-first-pass reviews)
+  - changes since the logged-in reviewer's last review activity (for non-first-pass reviews)
   - quiz questions asked and understanding gaps found
   - any proposed comments and whether they were posted
   - local run checklist provided
@@ -85,6 +96,7 @@ description: Guide an interactive human PR review by summarizing changes and lin
 ## Quality bar
 
 - Do not skip the quiz step.
+- Do not skip unresolved-comment and since-last-review checks for non-first-pass reviews.
 - Do not post any PR comment without explicit user approval.
 - Do not post comments without the `[AI-assisted]` prefix.
 - Keep recommendations grounded in PR diff and linked issue context.
