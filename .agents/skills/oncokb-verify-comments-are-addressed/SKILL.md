@@ -1,5 +1,5 @@
 ---
-name: verify-comments-are-addressed
+name: oncokb-verify-comments-are-addressed
 description: Verify whether pull request review comments are addressed, then guide the PR author through code fixes or prefixed replies for unresolved comments.
 ---
 

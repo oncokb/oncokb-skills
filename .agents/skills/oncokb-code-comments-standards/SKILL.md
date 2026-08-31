@@ -1,5 +1,5 @@
 ---
-name: code-comments-standards
+name: oncokb-code-comments-standards
 description: Comment-writing standard focused on explaining non-obvious structure and behavior for first-time readers.
 ---
 

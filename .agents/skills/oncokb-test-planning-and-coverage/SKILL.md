@@ -1,5 +1,5 @@
 ---
-name: test-planning-and-coverage
+name: oncokb-test-planning-and-coverage
 description: Decide when to add tests and how to design them; require user-provided test cases before implementing tests.
 ---
 

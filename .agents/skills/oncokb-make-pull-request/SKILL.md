@@ -1,5 +1,5 @@
 ---
-name: make-pull-request
+name: oncokb-make-pull-request
 description: Create or update a GitHub pull request with clear context, correct metadata, and a shareable URL.
 ---
 

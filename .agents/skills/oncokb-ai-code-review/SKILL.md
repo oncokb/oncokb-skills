@@ -1,5 +1,5 @@
 ---
-name: ai-code-review
+name: oncokb-ai-code-review
 description: Run an AI-assisted pre-PR review that validates issue linkage, local quality gates, manageable scope, PR creation, and review comments.
 ---
 
@@ -16,10 +16,10 @@ Follow this order and do not skip steps:
 1. `oncokb-github-issues`
 2. Local validation (format, lint, tests)
 3. Manageability and scope review
-4. `make-pull-request`
+4. `oncokb-make-pull-request`
 5. PR review comments prefixed with `[ai-generated]`
-6. `code-comments-standards`
-7. `test-planning-and-coverage`
+6. `oncokb-code-comments-standards`
+7. `oncokb-test-planning-and-coverage`
 
 ## Workflow
 
@@ -45,7 +45,7 @@ Follow this order and do not skip steps:
    - Completion criterion: reviewer can clearly see either (a) manageable scope or (b) a concrete split recommendation.
 
 4. Create or update the PR.
-   - Invoke the `make-pull-request` skill to create/update PR metadata and body.
+   - Invoke the `oncokb-make-pull-request` skill to create/update PR metadata and body.
    - Include the issue reference from step 1 in related issues (`Fixes #...` or `Refs #...` as appropriate).
    - Completion criterion: PR exists with correct metadata and issue linkage.
 
@@ -56,12 +56,12 @@ Follow this order and do not skip steps:
    - Completion criterion: PR contains useful `[ai-generated]` review comments or an explicit no-issues-found note.
 
 6. Review code comments quality.
-   - Invoke `code-comments-standards` and assess whether comments explain non-obvious logic, invariants, and decisions.
+   - Invoke `oncokb-code-comments-standards` and assess whether comments explain non-obvious logic, invariants, and decisions.
    - Add `[ai-generated]` PR comments for missing or weak comments in non-trivial areas.
    - Completion criterion: comment-quality findings are documented in the PR.
 
 7. Review testing adequacy.
-   - Invoke `test-planning-and-coverage` and assess whether tests are sufficient for changed behavior and risk.
+   - Invoke `oncokb-test-planning-and-coverage` and assess whether tests are sufficient for changed behavior and risk.
    - Add `[ai-generated]` PR comments for missing high-value tests or coverage gaps.
    - Completion criterion: test-coverage findings are documented in the PR.
 

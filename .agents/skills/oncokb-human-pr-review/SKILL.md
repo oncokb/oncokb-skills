@@ -1,5 +1,5 @@
 ---
-name: human-pr-review
+name: oncokb-human-pr-review
 description: Guide an interactive human PR review by summarizing changes and linked issues, checking reviewer understanding with a quiz, and posting reviewer-approved PR comments.
 ---
 
