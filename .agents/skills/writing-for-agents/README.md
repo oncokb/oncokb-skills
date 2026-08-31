@@ -1,0 +1,3 @@
+# Writing for Agents
+
+[From this](https://github.com/mattpocock/skills/tree/6654f6b60cd9d5be8b54c6fafe44346dabeb3b76/skills/productivity/writing-for-agents)
