@@ -16,6 +16,7 @@ description: Create or update a GitHub pull request with clear context, correct 
 - You may recommend defaults, but wait for user confirmation before using recommended values.
 - If information is missing, ask one grouped question covering all missing inputs.
 - Require at least one user-confirmed PR tag (label) when creating a PR.
+- Require at least one related issue link or ID for every PR; do not create or update a PR without it.
 
 ## Workflow
 
@@ -38,7 +39,7 @@ description: Create or update a GitHub pull request with clear context, correct 
    - Write a specific, searchable PR title aligned with repository style using user-provided details.
    - Use the template that matches the confirmed PR kind.
    - Include only user-provided facts in summary, rationale, testing, and follow-ups.
-   - Link related issues (`Fixes #123` style) only when the user provides issue references explicitly.
+   - Include a related issue link using user-provided references (`Fixes #123` style when closure is intended, otherwise `Refs #123`).
    - Completion criterion: a reviewer can understand intent, scope, and verification steps without opening local diffs.
 
 4. Create or update PR via `gh`.
@@ -47,7 +48,7 @@ description: Create or update a GitHub pull request with clear context, correct 
    - For new PRs, fetch repository labels and ask the user to choose at least one tag.
    - In `oncokb/oncokb-skills`, recommend tags from the supported set below and let the user confirm the final selection.
    - Apply requested metadata (reviewers, assignees, labels, milestone, draft/ready state).
-   - Completion criterion: PR is present on GitHub with correct metadata and body.
+   - Completion criterion: PR is present on GitHub with correct metadata, body, and at least one related issue reference.
 
 5. Validate and report.
    - Confirm PR URL, state (draft/ready), base/head branches, and linked issues.
@@ -64,6 +65,8 @@ Before creating or updating a PR, ask one grouped question for any missing input
 - Testing performed and exact commands/results to report
 - Related issue links/IDs to reference
 - Metadata to apply: reviewers, assignees, labels (at least one required for new PRs), milestone, draft/ready state
+
+If related issue links/IDs are missing, pause PR creation/update and ask for them before proceeding.
 
 ## PR templates
 
@@ -137,4 +140,5 @@ If a user requests a tag outside this set, check whether the label exists in the
 - Keep titles and bodies concrete; avoid placeholders and vague summaries.
 - Ensure every non-trivial commit in the branch is represented in PR context.
 - Do not create a PR without at least one confirmed tag (label).
+- Do not create or update a PR without at least one related issue link or issue ID in the PR body.
 - Flag blockers early: no push permission, missing reviewers, branch protections, or missing repo access.

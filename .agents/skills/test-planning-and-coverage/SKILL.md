@@ -24,6 +24,7 @@ Use this skill to decide test scope and test type before writing tests.
 - Add unit tests for non-trivial logic.
 - Treat business logic beyond basic CRUD as non-trivial unless the user states otherwise.
 - Add end-to-end tests for user-facing I/O behavior, including API call flows and rendering output checks.
+- If end-to-end tests are in scope, include performance testing as required coverage for those end-to-end flows.
 - For UI rendering behavior, include screenshot-based assertions when the project already supports visual or snapshot-style rendering checks.
 - If the codebase already supports database migration tests and the change affects schema or migration logic, add migration-focused tests.
 
@@ -35,6 +36,7 @@ Ask one grouped question that captures:
 - The priority order of those test cases.
 - Any required constraints (framework, fixtures, environments, CI limits, or snapshot policy).
 - Any required constraints for migration tests when migration test infrastructure already exists.
+- Any required constraints for end-to-end performance testing (budgets, thresholds, tooling, and environments) when end-to-end tests are present.
 
 If the user has already provided explicit test cases, confirm them briefly and proceed.
 
@@ -51,7 +53,7 @@ If the user has already provided explicit test cases, confirm them briefly and p
    - Completion criterion: user-approved list of test cases exists.
 
 3. Implement only approved test cases.
-   - Map each approved case to the right test layer (unit or end to end).
+   - Map each approved case to the right test layer (unit or end to end), and include required performance checks for any approved end-to-end coverage.
    - Keep tests deterministic and focused on observable behavior.
    - Completion criterion: every approved case is implemented once at the correct layer.
 
