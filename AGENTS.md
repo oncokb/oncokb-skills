@@ -5,3 +5,13 @@ in this repo. Please follow the `.agents/skills/writing-for-agents` skill as a t
 
 As you make changes to the skills, please make sure double check there are no
 conflicts with other skills.
+
+## Stow layout
+
+Skills use per-skill target subdirectories under `~/.agents/skills/`:
+
+- `~/.agents/skills/<skill-name>/`
+
+To stow all skills, run:
+
+- `bash scripts/stow-skills.sh`

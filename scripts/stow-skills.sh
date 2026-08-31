@@ -3,7 +3,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILLS_DIR="$REPO_ROOT/.agents/skills"
-TARGET_DIR="$HOME/.agents/skills"
+TARGET_ROOT="$HOME/.agents/skills"
 
 if ! command -v stow >/dev/null 2>&1; then
   echo "Error: GNU Stow is not installed." >&2
@@ -16,14 +16,16 @@ if [ ! -d "$SKILLS_DIR" ]; then
   exit 1
 fi
 
-mkdir -p "$TARGET_DIR"
+mkdir -p "$TARGET_ROOT"
 
 stowed_any=false
 for package_path in "$SKILLS_DIR"/*; do
   if [ -d "$package_path" ]; then
     package_name="$(basename "$package_path")"
-    stow --dir "$SKILLS_DIR" --target "$TARGET_DIR" --restow "$package_name"
-    echo "Stowed skill: $package_name"
+    package_target="$TARGET_ROOT/$package_name"
+    mkdir -p "$package_target"
+    stow --dir "$SKILLS_DIR" --target "$package_target" --restow "$package_name"
+    echo "Stowed skill: $package_name -> $package_target"
     stowed_any=true
   fi
 done
@@ -33,4 +35,4 @@ if [ "$stowed_any" = false ]; then
   exit 1
 fi
 
-echo "Done. Skills are exposed in $TARGET_DIR"
+echo "Done. Skills are exposed under $TARGET_ROOT/<skill-name>/"
