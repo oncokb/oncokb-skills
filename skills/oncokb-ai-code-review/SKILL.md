@@ -16,12 +16,14 @@ Follow this order and do not skip steps:
 1. `oncokb-github-issues`
 2. Local validation (format, lint, tests)
 3. Manageability and scope review
-4. `oncokb-database-review`
-5. `oncokb-logging-review`
-6. `oncokb-make-pull-request`
-7. PR review comments prefixed with `[ai-generated]`
-8. `oncokb-code-comments-standards`
-9. `oncokb-test-planning-and-coverage`
+4. `oncokb-make-pull-request`
+5. `oncokb-database-review`
+6. `oncokb-logging-review`
+7. `oncokb-html-accessibility-reference`
+8. Repo-specific code-review skill discovery
+9. PR review comments prefixed with `[ai-generated]`
+10. `oncokb-code-comments-standards`
+11. `oncokb-test-planning-and-coverage`
 
 ## Workflow
 
@@ -46,36 +48,49 @@ Follow this order and do not skip steps:
    - If soft limits are exceeded or scope is mixed, recommend a PR stack split plan.
    - Completion criterion: reviewer can clearly see either (a) manageable scope or (b) a concrete split recommendation.
 
-4. Review database access risks.
+4. Create or update the PR.
+   - Invoke the `oncokb-make-pull-request` skill to create/update PR metadata and body.
+   - Include the issue reference from step 1 in related issues (`Fixes #...` or `Refs #...` as appropriate).
+   - Completion criterion: PR exists with correct metadata and issue linkage.
+
+5. Review database access risks.
    - Invoke `oncokb-database-review` and assess changed DB access for N+1 query risks, SQL injection risks, and deterministic pagination ordering.
    - If paging exists, require `ORDER BY` to include a unique tie-breaker (for example `id` or another unique key).
    - Add `[ai-generated]` review comments for any blockers or high-value follow-ups from the database review.
    - Completion criterion: database-review findings are documented and actionable.
 
-5. Review logging quality and severity.
+6. Review logging quality and severity.
    - Invoke `oncokb-logging-review` and assess changed logging for correct `TRACE`/`DEBUG`/`INFO`/`WARN`/`ERROR`/`FATAL` usage.
    - Require level labels on all changed application logs.
    - Ensure changed error/fatal events are logged and intentionally ignored errors are logged as `WARN`.
    - Add `[ai-generated]` review comments for blockers and high-value `INFO` suggestions from the logging review.
    - Completion criterion: logging-review findings are documented and actionable.
 
-6. Create or update the PR.
-   - Invoke the `oncokb-make-pull-request` skill to create/update PR metadata and body.
-   - Include the issue reference from step 1 in related issues (`Fixes #...` or `Refs #...` as appropriate).
-   - Completion criterion: PR exists with correct metadata and issue linkage.
+7. Review HTML accessibility basics.
+   - Invoke `oncokb-html-accessibility-reference` and use its references to review changed HTML/UI markup.
+   - Check semantic HTML usage, accessible form labeling, heading/landmark structure, keyboard access, and ARIA misuse.
+   - Add `[ai-generated]` review comments for accessibility blockers or high-value follow-ups.
+   - Completion criterion: accessibility findings are documented and actionable.
 
-7. Add AI review comments on the PR.
+8. Check for additional repo-specific code review skills.
+   - Inspect the current repository for any additional skills intended for code review (for example under `skills/` and referenced in local agent docs).
+   - Identify skills not already covered by this chain that are applicable to the current PR.
+   - Invoke each applicable additional review skill and capture actionable findings.
+   - Add `[ai-generated]` review comments for blockers or high-value follow-ups from those skills.
+   - Completion criterion: repo-specific applicable review skills are either run with findings recorded, or explicitly reported as none found.
+
+9. Add AI review comments on the PR.
    - Post review comments that begin with `[ai-generated]`.
    - Keep comments specific, actionable, and tied to files/lines or clear review concerns.
    - Do not post vague praise-only comments.
    - Completion criterion: PR contains useful `[ai-generated]` review comments or an explicit no-issues-found note.
 
-8. Review code comments quality.
+10. Review code comments quality.
    - Invoke `oncokb-code-comments-standards` and assess whether comments explain non-obvious logic, invariants, and decisions.
    - Add `[ai-generated]` PR comments for missing or weak comments in non-trivial areas.
    - Completion criterion: comment-quality findings are documented in the PR.
 
-9. Review testing adequacy.
+11. Review testing adequacy.
    - Invoke `oncokb-test-planning-and-coverage` and assess whether tests are sufficient for changed behavior and risk.
    - Add `[ai-generated]` PR comments for missing high-value tests or coverage gaps.
    - Completion criterion: test-coverage findings are documented in the PR.
@@ -89,6 +104,8 @@ Follow this order and do not skip steps:
   - manageable vs needs-split decision
   - database review findings (N+1, injection, pagination determinism, and key follow-ups)
   - logging review findings (level correctness, label coverage, error/fatal observability, ignored-error WARN logging, and INFO suggestions)
+  - HTML accessibility findings (semantic structure, labels, keyboard access, ARIA usage, and follow-ups)
+  - additional repo-specific review skills found and findings (or explicit none-found)
   - PR URL
   - count and summary of `[ai-generated]` comments posted
 - If work is blocked (permissions, failing checks, missing issue), report the exact blocker and the next command or action needed.
@@ -98,4 +115,5 @@ Follow this order and do not skip steps:
 - Never claim a command passed unless it was actually run.
 - Never create/update a PR without an issue reference.
 - Treat 500 lines and 20 source files as soft limits: recommend PR stacking when exceeded.
+- Do not skip applicable repo-specific code review skills discovered in the current repository.
 - Keep all automated review comments clearly marked with `[ai-generated]` at the start.
