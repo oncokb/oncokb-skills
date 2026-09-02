@@ -1,11 +1,11 @@
 # OncoKB Skills
 
-If you are asked to add/edit a skill then add the skill to `.agents/skills/` and
+If you are asked to add/edit a skill then add the skill to `skills/` and
 in this repo.
 
 All skill names and directories must start with the `oncokb-` prefix.
 
-Please follow the `.agents/skills/oncokb-writing-for-agents` skill as a template.
+Please follow the `skills/oncokb-writing-for-agents` skill as a template.
 
 As you make changes to the skills, please make sure double check there are no
 conflicts with other skills.

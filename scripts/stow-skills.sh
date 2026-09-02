@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SKILLS_DIR="$REPO_ROOT/.agents/skills"
+SKILLS_DIR="$REPO_ROOT/skills"
 TARGET_ROOT="$HOME/.agents/skills"
 
 if ! command -v stow >/dev/null 2>&1; then

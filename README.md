@@ -1,6 +1,6 @@
 # OncoKB Skills
 
-This repository stores agent skills under `.agents/skills/`.
+This repository stores agent skills under `skills/`.
 
 ## Expose skills with GNU Stow
 
@@ -18,4 +18,4 @@ This repository stores agent skills under `.agents/skills/`.
 
 This links each skill package into `~/.agents/skills/`.
 
-Whenever you add a new folder under `.agents/skills/`, rerun `bash scripts/stow-skills.sh` so the new skill is linked into `~/.agents/skills/`.
+Whenever you add a new folder under `skills/`, rerun `bash scripts/stow-skills.sh` so the new skill is linked into `~/.agents/skills/`.
