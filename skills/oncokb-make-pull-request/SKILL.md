@@ -15,6 +15,8 @@ description: Create or update a GitHub pull request with clear context, correct 
 
 - Collect required PR content from the user; do not assume missing details.
 - You may recommend defaults, but wait for user confirmation before using recommended values.
+- Users may decline non-blocking recommendations; do not force adoption when policy requirements are still met.
+- When a user declines a recommendation, require a short rationale and record it in at least one place: an inline code comment on impacted code, a PR review comment on impacted lines, or the PR summary/body.
 - If information is missing, ask one grouped question covering all missing inputs.
 - Require at least one user-confirmed PR tag (label) when creating a PR.
 - Require at least one related issue link or ID for every PR.
@@ -42,17 +44,19 @@ description: Create or update a GitHub pull request with clear context, correct 
 
 3. Build accurate PR context.
    - Review commit history and diff versus base branch.
-   - Ask the user to provide: what changed, why it changed, and user-visible impact.
-   - Ask for risk areas, migration notes, and rollout notes if applicable.
-   - You may propose draft phrasing based on diff context, but require user confirmation before finalizing PR body text.
-   - Completion criterion: PR title/body content can be written from verified branch changes.
+    - Ask the user to provide: what changed, why it changed, and user-visible impact.
+    - Ask for risk areas, migration notes, and rollout notes if applicable.
+    - Ask whether any agent suggestions were intentionally declined and collect the rationale plus where it should be documented.
+    - You may propose draft phrasing based on diff context, but require user confirmation before finalizing PR body text.
+    - Completion criterion: PR title/body content can be written from verified branch changes.
 
 4. Draft title and body.
    - Write a specific, searchable PR title aligned with repository style using user-provided details.
    - Use the template that matches the confirmed PR kind.
-   - Include only user-provided facts in summary, rationale, testing, and follow-ups.
-   - Include a related issue link using user-provided references (`Fixes #123` style when closure is intended, otherwise `Refs #123`).
-   - Completion criterion: a reviewer can understand intent, scope, and verification steps without opening local diffs.
+    - Include only user-provided facts in summary, rationale, testing, and follow-ups.
+    - If the user declined non-blocking suggestions, include the rationale in the agreed location (code comment, PR line comment, or PR summary/body).
+    - Include a related issue link using user-provided references (`Fixes #123` style when closure is intended, otherwise `Refs #123`).
+    - Completion criterion: a reviewer can understand intent, scope, and verification steps without opening local diffs.
 
 5. Create or update PR via `gh`.
    - Create with `gh pr create` when no PR exists.
@@ -74,6 +78,7 @@ Before creating or updating a PR, ask one grouped question for any missing input
 - PR kind: `feature`, `fix`, `documentation`, or `chore`
 - PR title
 - PR body facts (problem, approach, scope, risks, rollout)
+- Any declined non-blocking suggestions, including rationale and where to document them (code comment, PR line comment, or PR summary/body)
 - Testing performed and exact commands/results to report
 - Related issue links/IDs to reference (or permission to create one via `oncokb-github-issues`)
 - Metadata to apply: reviewers, assignees, labels (at least one required for new PRs), milestone, draft/ready state
@@ -151,6 +156,7 @@ If a user requests a tag outside this set, check whether the label exists in the
 - Never invent test results; only report commands actually run and their outcomes.
 - Keep titles and bodies concrete; avoid placeholders and vague summaries.
 - Ensure every non-trivial commit in the branch is represented in PR context.
+- If the user declines a non-blocking recommendation, preserve that choice and document the rationale in code comments, PR line comments, or PR summary/body as requested.
 - Do not create a PR without at least one confirmed tag (label).
 - Do not create or update a PR without at least one related issue link or issue ID in the PR body.
 - When missing, create the issue through `oncokb-github-issues` rather than continuing without issue linkage.
