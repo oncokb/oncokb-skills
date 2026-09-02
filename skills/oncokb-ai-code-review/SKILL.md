@@ -1,29 +1,30 @@
 ---
 name: oncokb-ai-code-review
-description: Run an AI-assisted pre-PR review that validates issue linkage, local quality gates, manageable scope, PR creation, and review comments.
+description: Run an AI-assisted PR review that validates issue linkage, local quality gates, manageable scope, and review comments.
 ---
 
 ## Scope
 
-- Use for end-to-end AI code review on a branch before or during PR creation.
+- Use for end-to-end AI code review on an existing PR.
 - Use this skill when the user asks for an AI review workflow, not just a single lint/test command.
 - Keep the review auditable: report commands run, outcomes, and the final PR URL.
+- This skill does not create or update pull requests. Use `oncokb-make-pull-request` for PR creation/update.
 
 ## Required skill chain
 
 Follow this order and do not skip steps:
 
-1. `oncokb-github-issues`
+1. Confirm target PR context
+   - `oncokb-make-pull-request` first if a PR does not exist yet.
 2. Local validation (format, lint, tests)
 3. Manageability and scope review
-4. `oncokb-make-pull-request`
-5. `oncokb-database-review`
-6. `oncokb-logging-review`
-7. `oncokb-html-accessibility-reference`
-8. Repo-specific code-review skill discovery
-9. PR review comments prefixed with `[ai-generated]`
-10. `oncokb-code-comments-standards`
-11. `oncokb-test-planning-and-coverage`
+4. `oncokb-database-review`
+5. `oncokb-logging-review`
+6. `oncokb-html-accessibility-reference`
+7. Repo-specific code-review skill discovery
+8. PR review comments prefixed with `[ai-generated]`
+9. `oncokb-code-comments-standards`
+10. `oncokb-test-planning-and-coverage`
 
 ## Workflow
 
@@ -36,7 +37,7 @@ Follow this order and do not skip steps:
 2. Run local quality gates.
    - Run all project formatting, linting, and test commands that apply to the changed code.
    - Discover commands from the project environment (for example package scripts, Make targets, Gradle/Maven tasks, or other repo-standard tooling).
-   - If any command fails, stop and report failures before opening/updating the PR.
+   - If any command fails, stop and report failures before proceeding with PR review comments.
    - Completion criterion: formatting, lint, and tests all complete with no errors.
 
 3. Check that the change is manageable.
@@ -48,10 +49,11 @@ Follow this order and do not skip steps:
    - If soft limits are exceeded or scope is mixed, recommend a PR stack split plan.
    - Completion criterion: reviewer can clearly see either (a) manageable scope or (b) a concrete split recommendation.
 
-4. Create or update the PR.
-   - Invoke the `oncokb-make-pull-request` skill to create/update PR metadata and body.
-   - Include the issue reference from step 1 in related issues (`Fixes #...` or `Refs #...` as appropriate).
-   - Completion criterion: PR exists with correct metadata and issue linkage.
+4. Confirm target PR context.
+   - Ask for the PR URL to review.
+   - If a PR does not exist yet, stop this skill and hand off to `oncokb-make-pull-request` first.
+   - Do not create or update PR metadata from this skill.
+   - Completion criterion: PR URL is confirmed and accessible for review/commenting.
 
 5. Review database access risks.
    - Invoke `oncokb-database-review` and assess changed DB access for N+1 query risks, SQL injection risks, and deterministic pagination ordering.
@@ -113,7 +115,7 @@ Follow this order and do not skip steps:
 ## Quality bar
 
 - Never claim a command passed unless it was actually run.
-- Never create/update a PR without an issue reference.
+- Never perform PR review work without an issue reference and a target PR URL.
 - Treat 500 lines and 20 source files as soft limits: recommend PR stacking when exceeded.
 - Do not skip applicable repo-specific code review skills discovered in the current repository.
 - Keep all automated review comments clearly marked with `[ai-generated]` at the start.
