@@ -16,10 +16,11 @@ Follow this order and do not skip steps:
 1. `oncokb-github-issues`
 2. Local validation (format, lint, tests)
 3. Manageability and scope review
-4. `oncokb-make-pull-request`
-5. PR review comments prefixed with `[ai-generated]`
-6. `oncokb-code-comments-standards`
-7. `oncokb-test-planning-and-coverage`
+4. `oncokb-database-review`
+5. `oncokb-make-pull-request`
+6. PR review comments prefixed with `[ai-generated]`
+7. `oncokb-code-comments-standards`
+8. `oncokb-test-planning-and-coverage`
 
 ## Workflow
 
@@ -44,23 +45,29 @@ Follow this order and do not skip steps:
    - If soft limits are exceeded or scope is mixed, recommend a PR stack split plan.
    - Completion criterion: reviewer can clearly see either (a) manageable scope or (b) a concrete split recommendation.
 
-4. Create or update the PR.
+4. Review database access risks.
+   - Invoke `oncokb-database-review` and assess changed DB access for N+1 query risks, SQL injection risks, and deterministic pagination ordering.
+   - If paging exists, require `ORDER BY` to include a unique tie-breaker (for example `id` or another unique key).
+   - Add `[ai-generated]` review comments for any blockers or high-value follow-ups from the database review.
+   - Completion criterion: database-review findings are documented and actionable.
+
+5. Create or update the PR.
    - Invoke the `oncokb-make-pull-request` skill to create/update PR metadata and body.
    - Include the issue reference from step 1 in related issues (`Fixes #...` or `Refs #...` as appropriate).
    - Completion criterion: PR exists with correct metadata and issue linkage.
 
-5. Add AI review comments on the PR.
+6. Add AI review comments on the PR.
    - Post review comments that begin with `[ai-generated]`.
    - Keep comments specific, actionable, and tied to files/lines or clear review concerns.
    - Do not post vague praise-only comments.
    - Completion criterion: PR contains useful `[ai-generated]` review comments or an explicit no-issues-found note.
 
-6. Review code comments quality.
+7. Review code comments quality.
    - Invoke `oncokb-code-comments-standards` and assess whether comments explain non-obvious logic, invariants, and decisions.
    - Add `[ai-generated]` PR comments for missing or weak comments in non-trivial areas.
    - Completion criterion: comment-quality findings are documented in the PR.
 
-7. Review testing adequacy.
+8. Review testing adequacy.
    - Invoke `oncokb-test-planning-and-coverage` and assess whether tests are sufficient for changed behavior and risk.
    - Add `[ai-generated]` PR comments for missing high-value tests or coverage gaps.
    - Completion criterion: test-coverage findings are documented in the PR.
@@ -72,6 +79,7 @@ Follow this order and do not skip steps:
   - formatting/lint/test commands run and outcomes
   - scope metrics (source lines changed, source files changed)
   - manageable vs needs-split decision
+  - database review findings (N+1, injection, pagination determinism, and key follow-ups)
   - PR URL
   - count and summary of `[ai-generated]` comments posted
 - If work is blocked (permissions, failing checks, missing issue), report the exact blocker and the next command or action needed.
