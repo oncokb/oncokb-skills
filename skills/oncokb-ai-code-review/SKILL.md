@@ -16,7 +16,7 @@ Follow this order and do not skip steps:
 
 1. Confirm target PR context
    - `oncokb-make-pull-request` first if a PR does not exist yet.
-2. Local validation (format, lint, tests)
+2. (Optional Ask User First) Local validation (format, lint, tests)
 3. Manageability and scope review
 4. `oncokb-database-review`
 5. `oncokb-logging-review`
